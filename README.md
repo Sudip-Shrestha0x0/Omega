@@ -55,7 +55,7 @@ To facilitate testing and explore the full functionality of the platform, please
 - **Framer Motion**: Smooth animations and micro-interactions
 - **Accessibility**: Built with Radix UI primitives for a11y compliance
 
-## Screenshots
+## UI Preview
 
 <table align="center">
   <tr>
