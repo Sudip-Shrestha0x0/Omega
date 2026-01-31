@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/omega-icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Omega - Uncensored AI Assistant</title>
+    <script src="https://js.puter.com/v2/"></script>
+    <meta name="description" content="The most advanced uncensored AI assistant. No filters, no limits, pure intelligence." />
+    <meta name="author" content="Light" />
+
+    <meta property="og:title" content="Omega - Uncensored AI Assistant" />
+    <meta property="og:description" content="The most advanced uncensored AI assistant. No filters, no limits, pure intelligence." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og-image.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Omega - Uncensored AI Assistant" />
+    <meta name="twitter:description" content="The most advanced uncensored AI assistant." />
+    <meta name="twitter:image" content="/og-image.jpg" />
+    <style>
+      body { background-color: #000; margin: 0; }
+      .initial-loader {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 100vw;
+        background-color: #000;
+      }
+      .spinner {
+        width: 48px;
+        height: 48px;
+        border: 4px solid #f97316; /* orange-500 */
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      @keyframes thinking-pulse {
+        0%, 100% {
+          transform: scaleY(0.5);
+          opacity: 0.5;
+        }
+        50% {
+          transform: scaleY(1);
+          opacity: 1;
+        }
+      }
+      .thinking-bar { animation: thinking-pulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+      /* Premium Black Scrollbar */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: #333 #000;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+        background-color: #000;
+      }
+      ::-webkit-scrollbar-track {
+        background: #000;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: #333;
+        border-radius: 4px;
+        border: 1px solid #000;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: #f97316;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="initial-loader">
+        <div class="spinner"></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
