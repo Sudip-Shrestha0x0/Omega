@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://placehold.co/150x150/18181b/f97316?text=Ω" alt="Omega Logo" />
+  <img src="./public/omega-icon.svg" alt="Omega Logo" />
   <h1>Omega AI Platform</h1>
   <p>A production-grade, feature-rich, unbiased and unfiltered AI assistant platform built with modern frontend technologies.</p>
 
