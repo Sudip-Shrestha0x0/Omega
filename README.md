@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./public/omega-icon.svg" alt="Omega Logo" />
+  <img src="./public/omega-icon.svg" alt="Omega Logo" height="100" width="100" />
   <h1>Omega AI Platform</h1>
   <p>A production-grade, feature-rich, unbiased and unfiltered AI assistant platform built with modern frontend technologies.</p>
 
