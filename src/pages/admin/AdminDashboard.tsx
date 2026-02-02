@@ -136,7 +136,7 @@ const AdminDashboard = () => {
 
   if (user?.role !== 'admin') {
     return (
-      <div className="flex flex-col h-full w-full">
+      <div className="flex flex-col h-full w-full overflow-x-hidden">
         <header className="flex items-center sticky top-0 z-10 gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6 py-4">
           <SidebarTrigger />
           <h1 className="text-2xl font-bold">Access Denied</h1>
@@ -155,60 +155,61 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="flex flex-col h-full w-full">
-      <header className="flex items-center justify-between sticky top-0 z-10 gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6 py-4">
-        <div className="flex items-center gap-4">
+    <div className="flex flex-col h-screen w-full overflow-hidden">
+      <header className="flex-shrink-0 flex items-center justify-between z-10 gap-2 sm:gap-4 border-b bg-background px-3 sm:px-6 py-4">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           <SidebarTrigger />
-          <div>
-            <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-            <p className="text-sm text-muted-foreground">Manage users and system settings</p>
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold">Admin Dashboard</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground truncate">Manage users and system settings</p>
           </div>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg font-semibold transition-all flex items-center gap-2"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground px-3 sm:px-4 py-2 rounded-lg font-semibold transition-all flex items-center gap-1 sm:gap-2 flex-shrink-0 text-sm sm:text-base"
         >
           <UserPlus className="w-4 h-4" />
-          Create User
+          <span className="hidden sm:inline">Create User</span>
+          <span className="sm:hidden">New</span>
         </button>
       </header>
 
-      <main className="flex-1 overflow-auto p-6">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-6 scrollbar-hide">
         <div className="max-w-6xl mx-auto space-y-6">
           {/* Stats */}
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-card border p-6 rounded-lg"
+              className="bg-card border p-4 sm:p-6 rounded-lg"
             >
-              <Users className="w-8 h-8 text-primary mb-3" />
-              <h3 className="text-2xl font-bold mb-1">{allUsers.length}</h3>
-              <p className="text-muted-foreground">Total Users</p>
+              <Users className="w-6 h-6 sm:w-8 sm:h-8 text-primary mb-2 sm:mb-3" />
+              <h3 className="text-xl sm:text-2xl font-bold mb-1">{allUsers.length}</h3>
+              <p className="text-sm sm:text-base text-muted-foreground">Total Users</p>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-card border p-6 rounded-lg"
+              className="bg-card border p-4 sm:p-6 rounded-lg"
             >
-              <Shield className="w-8 h-8 text-blue-500 mb-3" />
-              <h3 className="text-2xl font-bold mb-1">
+              <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500 mb-2 sm:mb-3" />
+              <h3 className="text-xl sm:text-2xl font-bold mb-1">
                 {allUsers.filter(u => u.role === 'admin').length}
               </h3>
-              <p className="text-muted-foreground">Administrators</p>
+              <p className="text-sm sm:text-base text-muted-foreground">Administrators</p>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-card border p-6 rounded-lg"
+              className="bg-card border p-4 sm:p-6 rounded-lg"
             >
-              <Users className="w-8 h-8 text-green-500 mb-3" />
-              <h3 className="text-2xl font-bold mb-1">
+              <Users className="w-6 h-6 sm:w-8 sm:h-8 text-green-500 mb-2 sm:mb-3" />
+              <h3 className="text-xl sm:text-2xl font-bold mb-1">
                 {allUsers.filter(u => u.role === 'user').length}
               </h3>
-              <p className="text-muted-foreground">Regular Users</p>
+              <p className="text-sm sm:text-base text-muted-foreground">Regular Users</p>
             </motion.div>
           </div>
 
@@ -219,8 +220,8 @@ const AdminDashboard = () => {
             transition={{ delay: 0.3 }}
             className="bg-card border rounded-lg overflow-hidden"
           >
-            <div className="p-6 border-b">
-              <h2 className="text-xl font-bold">All Users</h2>
+            <div className="p-4 sm:p-6 border-b">
+              <h2 className="text-lg sm:text-xl font-bold">All Users</h2>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -236,8 +237,8 @@ const AdminDashboard = () => {
                 <tbody className="divide-y">
                   {allUsers.map((u, index) => (
                     <tr key={index} className="hover:bg-accent">
-                      <td className="px-6 py-4 font-medium">{u.username}</td>
-                      <td className="px-6 py-4 text-muted-foreground">{u.email}</td>
+                      <td className="px-6 py-4 font-medium break-words">{u.username}</td>
+                      <td className="px-6 py-4 text-muted-foreground break-all">{u.email}</td>
                       <td className="px-6 py-4">
                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                           u.role === 'admin' 

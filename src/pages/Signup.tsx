@@ -170,7 +170,7 @@ const SignupContent = () => {
           </p>
 
           <div className="mb-6 flex justify-center">
-            <div style={{ width: "384px" }}>
+            <div className="w-full max-w-[384px]">
               <GoogleLogin
                 onSuccess={handleGoogleSuccess}
                 onError={() => {
@@ -183,7 +183,6 @@ const SignupContent = () => {
                 }}
                 theme="filled_black"
                 size="large"
-                width="384"
               />
             </div>
           </div>

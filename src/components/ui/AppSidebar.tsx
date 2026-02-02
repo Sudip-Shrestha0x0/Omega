@@ -115,11 +115,22 @@ export function AppSidebar() {
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={location.pathname === item.url}>
-                    <Link to={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
+                  <SidebarMenuButton
+                    asChild={item.title !== "Chat"}
+                    isActive={location.pathname === item.url}
+                    onClick={item.title === "Chat" ? handleNewChat : undefined}
+                  >
+                    {item.title === "Chat" ? (
+                      <>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </>
+                    ) : (
+                      <Link to={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    )}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

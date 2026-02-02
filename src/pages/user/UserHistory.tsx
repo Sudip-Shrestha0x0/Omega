@@ -104,16 +104,16 @@ const UserHistory = () => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full bg-black">
-      <header className="flex items-center sticky top-0 z-10 gap-4 border-b border-zinc-800 bg-black px-6 py-4">
+    <div className="flex flex-col h-screen w-full bg-black overflow-hidden">
+      <header className="flex-shrink-0 flex items-center z-10 gap-2 sm:gap-4 border-b border-zinc-800 bg-black px-3 sm:px-6 py-4">
         <SidebarTrigger />
-        <div>
-          <h1 className="text-2xl font-bold text-white">Chat History</h1>
-          <p className="text-sm text-gray-400">View and manage your conversations</p>
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold text-white">Chat History</h1>
+          <p className="text-xs sm:text-sm text-gray-400 truncate">View and manage your conversations</p>
         </div>
       </header>
 
-      <main className="flex-1 overflow-auto p-6 bg-black">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-6 bg-black scrollbar-hide">
         <div className="max-w-4xl mx-auto space-y-6">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -171,35 +171,35 @@ const UserHistory = () => {
                           key={conversation.id}
                           whileHover={{ scale: 1.02 }}
                           onClick={() => handleOpenConversation(conversation.id)}
-                          className="group bg-zinc-900 border border-zinc-800 hover:border-orange-500/50 p-6 rounded-lg cursor-pointer transition-all"
+                          className="group bg-zinc-900 border border-zinc-800 hover:border-orange-500/50 p-3 sm:p-6 rounded-lg cursor-pointer transition-all"
                         >
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex items-start gap-4 flex-1 min-w-0">
-                              <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                                <MessageSquare className="w-5 h-5 text-orange-500" />
+                          <div className="flex items-start justify-between gap-2 sm:gap-4">
+                            <div className="flex items-start gap-2 sm:gap-4 flex-1 min-w-0">
+                              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                                <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
                               </div>
                               <div className="flex-1 min-w-0">
-                                <h3 className="text-base font-semibold text-white mb-1 truncate">
+                                <h3 className="text-sm sm:text-base font-semibold text-white mb-1 truncate break-words">
                                   {conversation.title}
                                 </h3>
-                                <p className="text-sm text-gray-400 line-clamp-2 mb-3">
+                                <p className="text-xs sm:text-sm text-gray-400 line-clamp-2 mb-2 sm:mb-3 break-words">
                                   {conversation.lastMessage}
                                 </p>
-                                <div className="flex items-center gap-4 text-xs text-gray-600">
-                                  <div className="flex items-center gap-1">
-                                    <Clock className="w-3 h-3" />
+                                <div className="flex items-center gap-2 sm:gap-4 text-xs text-gray-600 flex-wrap">
+                                  <div className="flex items-center gap-1 whitespace-nowrap">
+                                    <Clock className="w-3 h-3 flex-shrink-0" />
                                     <span>{formatTimestamp(conversation.timestamp)}</span>
                                   </div>
-                                  <span>·</span>
-                                  <span>{conversation.messageCount} messages</span>
+                                  <span className="hidden sm:inline">·</span>
+                                  <span className="whitespace-nowrap">{conversation.messageCount} messages</span>
                                 </div>
                               </div>
                             </div>
                             <button
                               onClick={(e) => handleDeleteConversation(conversation.id, e)}
-                              className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-red-500/20 rounded-lg text-gray-400 hover:text-red-500"
+                              className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 sm:p-2 hover:bg-red-500/20 rounded-lg text-gray-400 hover:text-red-500 flex-shrink-0"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                             </button>
                           </div>
                         </motion.div>

@@ -139,7 +139,9 @@ const UserChat = () => {
   const [thinkingOpenStates, setThinkingOpenStates] = useState<Record<string, boolean>>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const loadedMessageIdsRef = useRef<Set<string>>(new Set());
 
   // Helper to parse thinking content from message
   const parseThinkingContent = useCallback((content: string) => {
@@ -186,6 +188,8 @@ const UserChat = () => {
     setAttachedFiles([]);
     setEditingMessageId(null);
     setEditingContent('');
+    loadedMessageIdsRef.current.clear();
+    animatedMessagesRef.current.clear();
     const newId = `conv-${Date.now()}`;
     setCurrentConversationId(newId);
     navigate('/dashboard/chat', { replace: true });
@@ -213,10 +217,15 @@ const UserChat = () => {
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
-          setMessages(parsed.map((m: { timestamp: string } & Omit<ChatMessage, 'timestamp'>) => ({
+          const loadedMessages = parsed.map((m: { timestamp: string } & Omit<ChatMessage, 'timestamp'>) => ({
             ...m,
             timestamp: new Date(m.timestamp),
-          })));
+          }));
+          // Track loaded message IDs so we don't animate them
+          loadedMessages.forEach((m: ChatMessage) => {
+            loadedMessageIdsRef.current.add(m.id);
+          });
+          setMessages(loadedMessages);
         } catch (error) {
           // Silent failure for history load
         }
@@ -304,6 +313,10 @@ const UserChat = () => {
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setAttachedFiles([]);
+    // Reset textarea height
+    if (textareaRef.current) {
+      textareaRef.current.style.height = '48px';
+    }
     setIsLoading(true);
     
     if (abortControllerRef.current) {
@@ -430,6 +443,11 @@ const UserChat = () => {
   const animatedMessagesRef = useRef<Set<string>>(new Set());
 
   const renderMessageContent = useCallback((content: string, messageId: string, shouldAnimate: boolean) => {
+    // Never animate messages that were loaded from localStorage
+    if (loadedMessageIdsRef.current.has(messageId)) {
+      shouldAnimate = false;
+    }
+
     // Mark this message as animated if it should animate
     if (shouldAnimate && !animatedMessagesRef.current.has(messageId)) {
       animatedMessagesRef.current.add(messageId);
@@ -560,16 +578,16 @@ const UserChat = () => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full bg-black">
-      <header className="flex items-center justify-between sticky top-0 z-10 gap-4 border-b border-zinc-800 bg-black px-6 py-4">
-        <div className="flex items-center gap-4">
+    <div className="flex flex-col h-screen w-full bg-black overflow-hidden">
+      <header className="flex-shrink-0 flex items-center justify-between z-10 gap-2 sm:gap-4 border-b border-zinc-800 bg-black px-3 sm:px-6 py-4">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           <SidebarTrigger />
-          <div>
-            <h1 className="text-2xl font-bold text-white">Ω Chat</h1>
-            <p className="text-sm text-gray-400">Powered by Omega</p>
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold text-white">Ω Chat</h1>
+            <p className="text-xs sm:text-sm text-gray-400 truncate">Powered by Omega</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
           <button
             onClick={handleNewChat}
             className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
@@ -589,7 +607,7 @@ const UserChat = () => {
         </div>
       </header>
 
-      <main className="flex-1 overflow-auto p-6 bg-black">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-6 bg-black scrollbar-hide">
         <div className="max-w-4xl mx-auto space-y-4">
           {messages.length === 0 ? (
             <motion.div
@@ -668,7 +686,7 @@ const UserChat = () => {
                         </div>
                       </div>
                     ) : (
-                      <div className={`inline-block max-w-[80%] p-4 rounded-2xl relative group ${
+                      <div className={`inline-block max-w-[80%] p-4 rounded-2xl relative group break-words ${
                         message.role === 'user'
                           ? 'bg-orange-500 text-white'
                           : 'bg-zinc-900 border border-zinc-800 text-white'
@@ -731,8 +749,8 @@ const UserChat = () => {
                     )}
                     
                     {message.role === 'assistant' && index === messages.length - 1 && !isLoading && (
-                      <div className="mt-2 flex items-center justify-between px-1">
-                        <div className="flex items-center gap-1">
+                      <div className="mt-2 flex flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-2 px-1">
+                        <div className="flex items-center gap-1 flex-wrap">
                           <button
                             onClick={handleRegenerate}
                             className="p-1.5 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-md transition-colors"
@@ -765,7 +783,7 @@ const UserChat = () => {
                             <Copy className="w-4 h-4" />
                           </button>
                         </div>
-                        <div className="flex items-center gap-2 text-xs text-zinc-500">
+                        <div className="flex items-center gap-2 text-xs text-zinc-500 whitespace-nowrap">
                           <span>Generated by Omega</span>
                           <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
                         </div>
@@ -798,7 +816,7 @@ const UserChat = () => {
         </div>
       </main>
 
-      <footer className="border-t border-zinc-800 bg-black p-6">
+      <footer className="flex-shrink-0 z-20 border-t border-zinc-800 bg-black p-3 sm:p-6">
         <div className="max-w-4xl mx-auto">
           {attachedFiles.length > 0 && (
             <div className="mb-4 flex flex-wrap gap-2">
@@ -819,7 +837,7 @@ const UserChat = () => {
               })}
             </div>
           )}
-          <div className="flex gap-4">
+          <div className="flex gap-2 sm:gap-4">
             <input
               ref={fileInputRef}
               type="file"
@@ -829,34 +847,46 @@ const UserChat = () => {
             />
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center justify-center w-12 h-12 bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 hover:border-orange-500/50 rounded-lg transition-all"
+              className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 hover:border-orange-500/50 rounded-lg transition-all self-end flex-shrink-0"
             >
-              <Paperclip className="w-5 h-5 text-white" />
+              <Paperclip className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </button>
-            <input
-              type="text"
+            <textarea
+              ref={textareaRef}
               value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
+              onChange={(e) => {
+                setInput(e.target.value);
+                // Auto-resize textarea
+                e.target.style.height = 'auto';
+                e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px';
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
               placeholder="Message Omega..."
-              className="flex-1 bg-zinc-900 border border-zinc-800 text-white placeholder:text-gray-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              className="flex-1 bg-zinc-900 border border-zinc-800 text-white placeholder:text-gray-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none overflow-y-auto max-h-[200px]"
               disabled={isLoading}
+              rows={1}
+              style={{ minHeight: '48px' }}
             />
             {isLoading ? (
               <button
                 onClick={handleStopGeneration}
-                className="flex items-center justify-center w-12 h-12 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all"
+                className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all self-end flex-shrink-0"
                 title="Stop generating"
               >
-                <Square className="w-5 h-5 fill-current" />
+                <Square className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
               </button>
             ) : (
               <button
                 onClick={handleSend}
                 disabled={!input.trim() && attachedFiles.length === 0}
-                className="flex items-center justify-center w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed self-end flex-shrink-0"
               >
-                <Send className="w-5 h-5" />
+                <Send className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             )}
           </div>

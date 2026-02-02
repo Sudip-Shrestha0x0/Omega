@@ -79,36 +79,36 @@ const UserTeams = () => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full bg-black">
-      <header className="flex items-center sticky top-0 z-10 gap-4 border-b border-zinc-800 bg-black px-6 py-4">
+    <div className="flex flex-col h-screen w-full bg-black overflow-hidden">
+      <header className="flex-shrink-0 flex items-center z-10 gap-2 sm:gap-4 border-b border-zinc-800 bg-black px-3 sm:px-6 py-4">
         <SidebarTrigger />
-        <div>
-          <h1 className="text-2xl font-bold text-white">Team Collaboration</h1>
-          <p className="text-sm text-gray-400">Manage your team and collaborate together</p>
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold text-white">Team Collaboration</h1>
+          <p className="text-xs sm:text-sm text-gray-400 truncate">Manage your team and collaborate together</p>
         </div>
       </header>
 
-      <main className="flex-1 overflow-auto p-6 bg-black">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-6 bg-black scrollbar-hide">
         <div className="max-w-6xl mx-auto space-y-6">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="grid md:grid-cols-3 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6"
           >
-            <div className="bg-zinc-900 border border-zinc-800 p-6 rounded-lg">
-              <Users className="w-8 h-8 text-orange-500 mb-3" />
-              <h3 className="text-2xl font-bold text-white mb-1">{teamMembers.length}</h3>
-              <p className="text-gray-400">Team Members</p>
+            <div className="bg-zinc-900 border border-zinc-800 p-4 sm:p-6 rounded-lg">
+              <Users className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500 mb-2 sm:mb-3" />
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">{teamMembers.length}</h3>
+              <p className="text-sm sm:text-base text-gray-400">Team Members</p>
             </div>
-            <div className="bg-zinc-900 border border-zinc-800 p-6 rounded-lg">
-              <Shield className="w-8 h-8 text-blue-500 mb-3" />
-              <h3 className="text-2xl font-bold text-white mb-1">1</h3>
-              <p className="text-gray-400">Active Projects</p>
+            <div className="bg-zinc-900 border border-zinc-800 p-4 sm:p-6 rounded-lg">
+              <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500 mb-2 sm:mb-3" />
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">1</h3>
+              <p className="text-sm sm:text-base text-gray-400">Active Projects</p>
             </div>
-            <div className="bg-zinc-900 border border-zinc-800 p-6 rounded-lg">
-              <Crown className="w-8 h-8 text-orange-500 mb-3" />
-              <h3 className="text-2xl font-bold text-white mb-1 capitalize">{user?.plan || 'Free'}</h3>
-              <p className="text-gray-400">Current Plan</p>
+            <div className="bg-zinc-900 border border-zinc-800 p-4 sm:p-6 rounded-lg">
+              <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500 mb-2 sm:mb-3" />
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-1 capitalize">{user?.plan || 'Free'}</h3>
+              <p className="text-sm sm:text-base text-gray-400">Current Plan</p>
             </div>
           </motion.div>
 
@@ -116,20 +116,20 @@ const UserTeams = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-r from-orange-500/20 to-orange-600/20 p-8 rounded-lg border border-orange-500/50"
+              className="bg-gradient-to-r from-orange-500/20 to-orange-600/20 p-4 sm:p-8 rounded-lg border border-orange-500/50"
             >
-              <div className="flex items-start gap-4">
-                <Lock className="w-12 h-12 text-orange-500 flex-shrink-0" />
-                <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-white mb-2">Unlock Team Collaboration</h3>
-                  <p className="text-gray-300 mb-6">
+              <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+                <Lock className="w-10 h-10 sm:w-12 sm:h-12 text-orange-500 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">Unlock Team Collaboration</h3>
+                  <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">
                     Team features are available on Pro and Unlimited plans. Upgrade now to invite team members and collaborate together.
                   </p>
                   <button
                     onClick={handleUpgrade}
-                    className="bg-orange-500 hover:bg-orange-600 text-black hover:text-black px-8 py-3 rounded-lg font-bold transition-all inline-flex items-center gap-2 hover:scale-105"
+                    className="bg-orange-500 hover:bg-orange-600 text-black hover:text-black px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-bold transition-all inline-flex items-center gap-2 hover:scale-105 text-sm sm:text-base"
                   >
-                    <Crown className="w-5 h-5" />
+                    <Crown className="w-4 h-4 sm:w-5 sm:h-5" />
                     Upgrade Now
                   </button>
                 </div>
@@ -141,10 +141,10 @@ const UserTeams = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-zinc-900 border border-zinc-800 p-6 rounded-lg"
+            className="bg-zinc-900 border border-zinc-800 p-4 sm:p-6 rounded-lg"
           >
-            <h2 className="text-xl font-bold text-white mb-4">Invite Team Members</h2>
-            <div className="flex gap-4">
+            <h2 className="text-lg sm:text-xl font-bold text-white mb-4">Invite Team Members</h2>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <input
                 type="email"
                 value={inviteEmail}
@@ -178,36 +178,36 @@ const UserTeams = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-zinc-900 border border-zinc-800 p-6 rounded-lg"
+            className="bg-zinc-900 border border-zinc-800 p-4 sm:p-6 rounded-lg"
           >
-            <h2 className="text-xl font-bold text-white mb-4">Team Members</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-white mb-4">Team Members</h2>
             <div className="space-y-3">
               {teamMembers.map((member, index) => (
                 <div
                   key={index}
-                  className="bg-zinc-800 border border-zinc-700 p-4 rounded-lg flex items-center justify-between hover:bg-zinc-750 transition-colors"
+                  className="bg-zinc-800 border border-zinc-700 p-3 sm:p-4 rounded-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 hover:bg-zinc-750 transition-colors"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center">
-                      <span className="text-black font-bold text-lg">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-black font-bold text-base sm:text-lg">
                         {member.name.charAt(0).toUpperCase()}
                       </span>
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-white">{member.name}</h3>
-                      <p className="text-sm text-gray-400 flex items-center gap-2">
-                        <Mail className="w-3 h-3" />
-                        {member.email}
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-semibold text-sm sm:text-base text-white break-words">{member.name}</h3>
+                      <p className="text-xs sm:text-sm text-gray-400 flex items-center gap-2 break-all">
+                        <Mail className="w-3 h-3 flex-shrink-0" />
+                        <span className="break-all truncate">{member.email}</span>
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="bg-orange-500/20 text-orange-500 px-3 py-1 rounded-full text-sm font-semibold">
+                  <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                    <span className="bg-orange-500/20 text-orange-500 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
                       {member.role}
                     </span>
-                    <span className="bg-green-500/20 text-green-500 px-3 py-1 rounded-full text-sm flex items-center gap-1">
+                    <span className="bg-green-500/20 text-green-500 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm flex items-center gap-1">
                       <CheckCircle2 className="w-3 h-3" />
-                      {member.status}
+                      <span className="hidden sm:inline">{member.status}</span>
                     </span>
                   </div>
                 </div>
