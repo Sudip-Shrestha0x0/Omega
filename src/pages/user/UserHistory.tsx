@@ -27,12 +27,12 @@ const UserHistory = () => {
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
-          setConversations(parsed.map((c: any) => ({
+          setConversations(parsed.map((c: Omit<Conversation, 'timestamp'> & { timestamp: string }) => ({
             ...c,
             timestamp: new Date(c.timestamp),
           })));
         } catch (error) {
-          // Silently handle
+          // Ignore load errors
         }
       }
     }
@@ -104,8 +104,9 @@ const UserHistory = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen w-full bg-black overflow-hidden">
-      <header className="flex-shrink-0 flex items-center z-10 gap-2 sm:gap-4 border-b border-zinc-800 bg-black px-3 sm:px-6 py-4">
+    <div className="flex flex-col h-full w-full bg-black">
+      {/* Sticky header - */}
+      <header className="sticky top-0 flex-shrink-0 flex items-center z-20 gap-2 sm:gap-4 border-b border-zinc-800 bg-black px-3 sm:px-6 py-4">
         <SidebarTrigger />
         <div className="min-w-0">
           <h1 className="text-xl sm:text-2xl font-bold text-white">Chat History</h1>
@@ -113,22 +114,26 @@ const UserHistory = () => {
         </div>
       </header>
 
-      <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-6 bg-black scrollbar-hide">
-        <div className="max-w-4xl mx-auto space-y-6">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="relative"
-          >
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search conversations..."
-              className="w-full bg-zinc-900 border border-zinc-800 text-white rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
-            />
-          </motion.div>
+      <main className="flex-1 overflow-y-auto overflow-x-hidden bg-black scrollbar-hide">
+        <div className="sticky top-0 z-10 bg-black px-3 sm:px-6 pt-3 sm:pt-6 pb-3">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="relative"
+            >
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search conversations..."
+                className="w-full bg-zinc-900 border border-zinc-800 text-white rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              />
+            </motion.div>
+          </div>
+        </div>
+        <div className="max-w-4xl mx-auto px-3 sm:px-6 pb-3 sm:pb-6 space-y-6">
 
           {conversations.length === 0 ? (
             <motion.div

@@ -157,7 +157,6 @@ const UserSettings = () => {
   };
 
   const handleDeleteAccount = () => {
-    // In a real app, would call an API endpoint here to delete the user from DB
     toast({
       title: 'Account Deleted',
       description: 'Your account has been permanently deleted.',
@@ -168,21 +167,22 @@ const UserSettings = () => {
 
   return (
     <div className="flex flex-col h-full w-full bg-black">
-      <header className="flex items-center justify-between sticky top-0 z-10 gap-4 border-b border-zinc-800 bg-black px-6 py-4">
-        <div className="flex items-center gap-4">
+      {/* Sticky header */}
+      <header className="sticky top-0 flex-shrink-0 flex items-center justify-between z-20 gap-2 sm:gap-4 border-b border-zinc-800 bg-black px-3 sm:px-6 py-4">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           <SidebarTrigger />
-          <div>
-            <h1 className="text-2xl font-bold text-white">Settings</h1>
-            <p className="text-sm text-gray-400">Manage your account and preferences</p>
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold text-white">Settings</h1>
+            <p className="text-xs sm:text-sm text-gray-400 truncate">Manage your account and preferences</p>
           </div>
         </div>
-        <button onClick={logout} className="flex items-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg transition-colors border border-zinc-800">
+        <button onClick={logout} className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg transition-colors border border-zinc-800 flex-shrink-0 text-sm sm:text-base">
           <LogOut className="w-4 h-4" />
-          Logout
+          <span className="hidden sm:inline">Logout</span>
         </button>
       </header>
 
-      <main className="flex-1 overflow-auto p-6 bg-black">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-6 bg-black scrollbar-hide">
         <div className="max-w-4xl mx-auto space-y-6">
           <motion.div
             initial={{ opacity: 0, y: -20 }}

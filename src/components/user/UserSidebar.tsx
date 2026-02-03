@@ -34,12 +34,12 @@ export function UserSidebar() {
         try {
           const parsed = JSON.parse(stored);
           const recent = parsed
-            .map((c: any) => ({
+            .map((c: { id: string; title: string; timestamp: string }) => ({
               id: c.id,
               title: c.title,
               timestamp: new Date(c.timestamp),
             }))
-            .sort((a: any, b: any) => b.timestamp.getTime() - a.timestamp.getTime())
+            .sort((a: RecentConversation, b: RecentConversation) => b.timestamp.getTime() - a.timestamp.getTime())
             .slice(0, 5);
           setRecentChats(recent);
         } catch (error) {

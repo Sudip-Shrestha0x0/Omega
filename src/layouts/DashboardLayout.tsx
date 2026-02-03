@@ -5,9 +5,10 @@ import { AppSidebar } from '@/components/ui/AppSidebar';
 export default function DashboardLayout() {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full">
+      <div className="flex h-screen w-full overflow-hidden">
         <AppSidebar />
-        <main className="flex-1">
+        {/* overflow-y-auto to allow scrolling within pages while keeping flex layout */}
+        <main className="flex-1 h-full overflow-y-auto overflow-x-hidden">
           <Outlet />
         </main>
       </div>

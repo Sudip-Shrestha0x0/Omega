@@ -79,8 +79,9 @@ const UserTeams = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen w-full bg-black overflow-hidden">
-      <header className="flex-shrink-0 flex items-center z-10 gap-2 sm:gap-4 border-b border-zinc-800 bg-black px-3 sm:px-6 py-4">
+    <div className="flex flex-col h-full w-full bg-black">
+      {/* Sticky header */}
+      <header className="sticky top-0 flex-shrink-0 flex items-center z-20 gap-2 sm:gap-4 border-b border-zinc-800 bg-black px-3 sm:px-6 py-4">
         <SidebarTrigger />
         <div className="min-w-0">
           <h1 className="text-xl sm:text-2xl font-bold text-white">Team Collaboration</h1>

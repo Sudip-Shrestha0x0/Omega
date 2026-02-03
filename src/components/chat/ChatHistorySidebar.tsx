@@ -37,7 +37,7 @@ const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
-          setConversations(parsed.map((c: any) => ({
+          setConversations(parsed.map((c: Omit<Conversation, 'timestamp'> & { timestamp: string }) => ({
             ...c,
             timestamp: new Date(c.timestamp),
           })));
@@ -187,7 +187,7 @@ const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
                                 type="text"
                                 value={editingTitle}
                                 onChange={(e) => setEditingTitle(e.target.value)}
-                                onKeyPress={(e) => e.key === 'Enter' && handleSaveEdit(conversation.id, e as any)}
+                                onKeyPress={(e) => e.key === 'Enter' && handleSaveEdit(conversation.id, e as unknown as React.MouseEvent)}
                                 className="flex-1 bg-zinc-800 border border-orange-500 text-white text-sm rounded px-2 py-1 focus:outline-none"
                                 autoFocus
                               />

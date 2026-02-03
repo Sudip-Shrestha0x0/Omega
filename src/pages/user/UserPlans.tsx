@@ -40,16 +40,17 @@ const UserPlans = () => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full">
-      <header className="flex items-center sticky top-0 z-10 gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6 py-4">
+    <div className="flex flex-col h-full w-full bg-black">
+      {/* Sticky header  */}
+      <header className="sticky top-0 flex-shrink-0 flex items-center z-20 gap-2 sm:gap-4 border-b border-zinc-800 bg-black px-3 sm:px-6 py-4">
         <SidebarTrigger />
-        <div>
-          <h1 className="text-2xl font-bold">Plans & Pricing</h1>
-          <p className="text-sm text-muted-foreground">Choose the perfect plan for your needs</p>
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold text-white">Plans & Pricing</h1>
+          <p className="text-xs sm:text-sm text-gray-400 truncate">Choose the perfect plan for your needs</p>
         </div>
       </header>
 
-      <main className="flex-1 overflow-auto p-6">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-6 bg-black scrollbar-hide">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: -20 }}

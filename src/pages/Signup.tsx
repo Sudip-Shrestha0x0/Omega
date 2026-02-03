@@ -169,22 +169,21 @@ const SignupContent = () => {
             Join the future of AI intelligence
           </p>
 
-          <div className="mb-6 flex justify-center">
-            <div className="w-full max-w-[384px]">
-              <GoogleLogin
-                onSuccess={handleGoogleSuccess}
-                onError={() => {
-                  toast({
-                    title: "Google Sign-In Failed",
-                    description: "Unable to sign in with Google",
-                    variant: "destructive",
-                    duration: 2000,
-                  });
-                }}
-                theme="filled_black"
-                size="large"
-              />
-            </div>
+          <div className="mb-6 w-full max-w-sm mx-auto">
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => {
+                toast({
+                  title: "Google Sign-In Failed",
+                  description: "Unable to sign in with Google",
+                  variant: "destructive",
+                  duration: 2000,
+                });
+              }}
+              theme="filled_black"
+              size="medium"
+              useOneTap={false}
+            />
           </div>
 
           <div className="relative mb-6">

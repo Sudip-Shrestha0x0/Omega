@@ -84,4 +84,67 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* Mobile text overflow prevention - O(1) CSS property application */
+  .break-anywhere {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  /* Smooth touch scrolling for mobile - O(1) GPU acceleration */
+  .scroll-smooth-touch {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Safe area insets for iPhone notch/home indicator */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+}
+
+/* Code block overflow fix - critical for mobile */
+pre {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+pre code {
+  display: block;
+  max-width: 100%;
+}
+
+/* Global mobile optimizations */
+@media (max-width: 640px) {
+  /* Prevent horizontal overflow on mobile */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Better touch targets for mobile - minimum 44px as per Apple HIG */
+  button,
+  [role="button"],
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Prevent text selection issues on mobile */
+  pre, code {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Force code blocks to respect container width on mobile */
+  pre {
+    max-width: calc(100vw - 80px) !important;
+    white-space: pre;
+    word-wrap: normal;
+  }
 }

@@ -25,23 +25,36 @@ const CodeBlock = React.memo(({ language, code }: { language: string; code: stri
   };
 
   return (
-    <div className="my-4 rounded-lg overflow-hidden border border-zinc-800 bg-zinc-950">
-      <div className="flex items-center justify-between px-4 py-2 bg-zinc-900 border-b border-zinc-800">
-        <span className="text-xs text-zinc-400 font-mono">{language || 'code'}</span>
+    <div className="my-4 rounded-lg overflow-hidden border border-zinc-800 bg-zinc-950 w-full min-w-0" style={{ maxWidth: '100%' }}>
+      <div className="flex items-center justify-between px-3 sm:px-4 py-2 bg-zinc-900 border-b border-zinc-800">
+        <span className="text-xs text-zinc-400 font-mono truncate">{language || 'code'}</span>
         <button
           onClick={handleCopy}
-          className="flex items-center gap-1 text-xs text-zinc-400 hover:text-white transition-colors"
+          className="flex items-center gap-1 text-xs text-zinc-400 hover:text-white transition-colors flex-shrink-0 ml-2"
         >
           {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-          {copied ? 'Copied' : 'Copy code'}
+          <span className="hidden sm:inline">{copied ? 'Copied' : 'Copy code'}</span>
         </button>
       </div>
-      <div className="p-4 overflow-x-auto">
+      <div className="p-3 sm:p-4" style={{ maxWidth: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
         <SyntaxHighlighter
           language={language || 'text'}
           style={vscDarkPlus}
-          customStyle={{ margin: 0, padding: 0, background: 'transparent', fontSize: '0.875rem' }}
-          wrapLongLines={true}
+          customStyle={{
+            margin: 0,
+            padding: 0,
+            background: 'transparent',
+            fontSize: '0.75rem',
+            overflowX: 'auto',
+            maxWidth: '100%',
+          }}
+          codeTagProps={{
+            style: {
+              maxWidth: '100%',
+              display: 'block',
+            }
+          }}
+          wrapLongLines={false}
         >
           {code}
         </SyntaxHighlighter>
@@ -64,7 +77,6 @@ const SkeletonLoader = () => (
   </div>
 );
 
-// Component to display AI's reasoning/thinking process
 const ThinkingDisplay = React.memo(({ content, isOpen, onToggle }: { content: string; isOpen: boolean; onToggle: () => void }) => (
   <div className="mb-4 border border-zinc-700/50 rounded-lg overflow-hidden bg-black/20">
     <button
@@ -85,7 +97,7 @@ const ThinkingDisplay = React.memo(({ content, isOpen, onToggle }: { content: st
 
 // TypewriterText now only animates when explicitly triggered via shouldAnimate prop
 const TypewriterText = React.memo(({ text, shouldAnimate }: { text: string; shouldAnimate: boolean }) => {
-  // Track if we've already animated this instance
+  // Animation state
   const hasAnimatedRef = useRef(false);
   const [displayedText, setDisplayedText] = useState(() => shouldAnimate ? '' : text);
 
@@ -110,7 +122,7 @@ const TypewriterText = React.memo(({ text, shouldAnimate }: { text: string; shou
     }
   }, [text, displayedText, shouldAnimate]);
 
-  // Simple markdown parser for bold text
+  // Parse bold markdown
   const parseMarkdown = (content: string) => {
     const parts = content.split(/(\*\*.*?\*\*)/g);
     return parts.map((part, i) => {
@@ -143,7 +155,7 @@ const UserChat = () => {
   const abortControllerRef = useRef<AbortController | null>(null);
   const loadedMessageIdsRef = useRef<Set<string>>(new Set());
 
-  // Helper to parse thinking content from message
+  // Parse thinking tags
   const parseThinkingContent = useCallback((content: string) => {
     const thinkMatch = content.match(/<think>([\s\S]*?)(?:<\/think>|$)/);
     const hasThinking = !!thinkMatch;
@@ -192,6 +204,7 @@ const UserChat = () => {
     animatedMessagesRef.current.clear();
     const newId = `conv-${Date.now()}`;
     setCurrentConversationId(newId);
+    // Reset and navigate to new chat
     navigate('/dashboard/chat', { replace: true });
     toast({
       description: 'Started a new conversation',
@@ -204,7 +217,6 @@ const UserChat = () => {
     const isNewChat = (location.state as { newChat?: boolean })?.newChat;
 
     if (isNewChat) {
-      // This will reset state and navigate, clearing the location state
       handleNewChat();
     } else if (conversationId) {
       setCurrentConversationId(conversationId);
@@ -221,13 +233,13 @@ const UserChat = () => {
             ...m,
             timestamp: new Date(m.timestamp),
           }));
-          // Track loaded message IDs so we don't animate them
+          // Skip animation for loaded messages
           loadedMessages.forEach((m: ChatMessage) => {
             loadedMessageIdsRef.current.add(m.id);
           });
           setMessages(loadedMessages);
         } catch (error) {
-          // Silent failure for history load
+          // Ignore load errors
         }
       }
     }
@@ -439,34 +451,15 @@ const UserChat = () => {
     setIsLoading(false);
   };
 
-  // Track which messages have been animated to prevent re-animation
+  // Skip animation for loaded messages
   const animatedMessagesRef = useRef<Set<string>>(new Set());
 
   const renderMessageContent = useCallback((content: string, messageId: string, shouldAnimate: boolean) => {
-    // Never animate messages that were loaded from localStorage
-    if (loadedMessageIdsRef.current.has(messageId)) {
-      shouldAnimate = false;
-    }
-
-    // Mark this message as animated if it should animate
-    if (shouldAnimate && !animatedMessagesRef.current.has(messageId)) {
-      animatedMessagesRef.current.add(messageId);
-    }
-
-    // Only animate if this is a fresh message that hasn't been animated yet
-    const actuallyAnimate = shouldAnimate && animatedMessagesRef.current.has(messageId) && animatedMessagesRef.current.size > 0;
-
-    // For typewriter animation, show plain text progressively
-    if (actuallyAnimate && !isLoading) {
-      return <TypewriterText key={`${messageId}-typewriter`} text={content} shouldAnimate={true} />;
-    }
-
-    // For completed messages, render with full markdown support
+    // Always render with full markdown support for professional formatting
     return (
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
-          // Custom code block rendering
           code({ className, children, ...props }) {
             const match = /language-(\w+)/.exec(className || '');
             const isInline = !match;
@@ -486,7 +479,6 @@ const UserChat = () => {
               />
             );
           },
-          // Style other markdown elements
           h1: ({ children }) => <h2 className="text-xl font-bold text-orange-500 mt-4 mb-2">{children}</h2>,
           h2: ({ children }) => <h3 className="text-lg font-bold text-orange-400 mt-3 mb-2">{children}</h3>,
           h3: ({ children }) => <h4 className="text-base font-bold text-orange-300 mt-2 mb-1">{children}</h4>,
@@ -518,7 +510,7 @@ const UserChat = () => {
         {content}
       </ReactMarkdown>
     );
-  }, [isLoading]);
+  }, []);
 
   const handleStopGeneration = () => {
     if (abortControllerRef.current) {
@@ -578,8 +570,9 @@ const UserChat = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen w-full bg-black overflow-hidden">
-      <header className="flex-shrink-0 flex items-center justify-between z-10 gap-2 sm:gap-4 border-b border-zinc-800 bg-black px-3 sm:px-6 py-4">
+    <div className="flex flex-col h-full w-full bg-black">
+      {/* Sticky header */}
+      <header className="sticky top-0 flex-shrink-0 flex items-center justify-between z-20 gap-2 sm:gap-4 border-b border-zinc-800 bg-black px-3 sm:px-6 py-4">
         <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           <SidebarTrigger />
           <div className="min-w-0">
@@ -607,8 +600,8 @@ const UserChat = () => {
         </div>
       </header>
 
-      <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-6 bg-black scrollbar-hide">
-        <div className="max-w-4xl mx-auto space-y-4">
+      <main className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-3 sm:p-6 bg-black scrollbar-hide scroll-smooth">
+        <div className="max-w-4xl mx-auto space-y-4 min-h-full">
           {messages.length === 0 ? (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -662,7 +655,7 @@ const UserChat = () => {
                   </div>
                   <div className={`flex-1 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
                     {editingMessageId === message.id && message.role === 'user' ? (
-                      <div className="inline-block max-w-[80%]">
+                      <div className="inline-block max-w-[85%] sm:max-w-[75%]">
                         <textarea
                           value={editingContent}
                           onChange={(e) => setEditingContent(e.target.value)}
@@ -686,11 +679,11 @@ const UserChat = () => {
                         </div>
                       </div>
                     ) : (
-                      <div className={`inline-block max-w-[80%] p-4 rounded-2xl relative group break-words ${
+                      <div className={`inline-block max-w-[85%] sm:max-w-[75%] p-4 rounded-2xl relative group overflow-hidden ${
                         message.role === 'user'
                           ? 'bg-orange-500 text-white'
                           : 'bg-zinc-900 border border-zinc-800 text-white'
-                      }`}>
+                      }`} style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                         {/* Show thinking/reasoning panel for assistant messages */}
                         {message.role === 'assistant' && (() => {
                           const { hasThinking, thinkingContent, mainContent } = parseThinkingContent(message.content);
@@ -702,15 +695,15 @@ const UserChat = () => {
                                   isOpen={thinkingOpenStates[message.id] ?? true}
                                   onToggle={() => toggleThinkingPanel(message.id)}
                                 />
-                                <div className="whitespace-pre-wrap">{renderMessageContent(mainContent, message.id, index === messages.length - 1)}</div>
+                                <div className="whitespace-pre-wrap min-w-0 overflow-x-auto">{renderMessageContent(mainContent, message.id, index === messages.length - 1)}</div>
                               </>
                             );
                           }
-                          return <div className="whitespace-pre-wrap">{renderMessageContent(message.content, message.id, index === messages.length - 1)}</div>;
+                          return <div className="whitespace-pre-wrap min-w-0 overflow-x-auto">{renderMessageContent(message.content, message.id, index === messages.length - 1)}</div>;
                         })()}
                         {/* For user messages, just render content normally */}
                         {message.role === 'user' && (
-                          <div className="whitespace-pre-wrap">{renderMessageContent(message.content, message.id, false)}</div>
+                          <div className="whitespace-pre-wrap min-w-0">{renderMessageContent(message.content, message.id, false)}</div>
                         )}
                         {message.attachments && message.attachments.length > 0 && (
                           <div className="mt-2 pt-2 border-t border-current/20">
@@ -816,7 +809,7 @@ const UserChat = () => {
         </div>
       </main>
 
-      <footer className="flex-shrink-0 z-20 border-t border-zinc-800 bg-black p-3 sm:p-6">
+      <footer className="sticky bottom-0 flex-shrink-0 z-20 border-t border-zinc-800 bg-black p-3 sm:p-6 w-full">
         <div className="max-w-4xl mx-auto">
           {attachedFiles.length > 0 && (
             <div className="mb-4 flex flex-wrap gap-2">

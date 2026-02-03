@@ -12,7 +12,6 @@ const UserDashboard = () => {
   const plan = user ? paymentService.plans[user.plan] : null;
 
   useEffect(() => {
-    // Redirect to chat by default
     navigate('/dashboard/chat', { replace: true });
   }, [navigate]);
 
@@ -30,18 +29,18 @@ const UserDashboard = () => {
   ];
 
   return (
-    <div className="flex flex-col h-full w-full bg-omega-darkest">
-      <header className="flex items-center sticky top-0 z-10 gap-4 border-b border-omega-copper/30 bg-omega-darker px-6 py-4">
+    <div className="flex flex-col h-full w-full bg-black">
+      {/* Sticky header */}
+      <header className="sticky top-0 flex-shrink-0 flex items-center z-20 gap-2 sm:gap-4 border-b border-zinc-800 bg-black px-3 sm:px-6 py-4">
         <SidebarTrigger className="text-white" />
-        <div>
-          <h1 className="text-2xl font-bold text-white">Welcome back, {user?.username}!</h1>
-          <p className="text-sm text-gray-400">Here's what's happening with your AI assistant</p>
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold text-white">Welcome back, {user?.username}!</h1>
+          <p className="text-xs sm:text-sm text-gray-400 truncate">Here's what's happening with your AI assistant</p>
         </div>
       </header>
 
-      <main className="flex-1 overflow-auto p-6">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide p-3 sm:p-6 bg-black">
         <div className="max-w-7xl mx-auto space-y-8">
-          {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
               <motion.div
@@ -49,7 +48,7 @@ const UserDashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-omega-dark p-6 rounded-xl border border-omega-copper/30 hover:border-omega-orange/50 transition-all"
+                className="bg-zinc-900 p-6 rounded-xl border border-zinc-800 hover:border-orange-500/50 transition-all"
               >
                 <div className="flex items-center justify-between mb-4">
                   <stat.icon className={`w-8 h-8 ${stat.color}`} />
@@ -61,7 +60,6 @@ const UserDashboard = () => {
             ))}
           </div>
 
-          {/* Quick Actions */}
           <div>
             <h2 className="text-xl font-bold text-white mb-4">Quick Actions</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -81,13 +79,12 @@ const UserDashboard = () => {
             </div>
           </div>
 
-          {/* Current Plan */}
           {plan && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
-              className="bg-omega-dark p-6 rounded-xl border border-omega-copper/30"
+              className="bg-zinc-900 p-6 rounded-xl border border-zinc-800"
             >
               <div className="flex items-center justify-between mb-4">
                 <div>
@@ -98,32 +95,32 @@ const UserDashboard = () => {
                 </div>
                 <button
                   onClick={() => navigate('/dashboard/plans')}
-                  className="bg-omega-orange hover:bg-omega-burnt text-white px-6 py-2 rounded-lg font-semibold transition-all"
+                  className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold transition-all"
                 >
                   Upgrade
                 </button>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-omega-orange">
+                  <p className="text-2xl font-bold text-orange-500">
                     {plan.limits.messagesPerDay === Infinity ? '∞' : plan.limits.messagesPerDay}
                   </p>
                   <p className="text-sm text-gray-400">Messages/day</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-omega-orange">
+                  <p className="text-2xl font-bold text-orange-500">
                     {plan.limits.searchesPerDay === Infinity ? '∞' : plan.limits.searchesPerDay}
                   </p>
                   <p className="text-sm text-gray-400">Searches/day</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-omega-orange">
+                  <p className="text-2xl font-bold text-orange-500">
                     {plan.limits.codeGenerations === Infinity ? '∞' : plan.limits.codeGenerations}
                   </p>
                   <p className="text-sm text-gray-400">Code Gens</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-omega-orange">
+                  <p className="text-2xl font-bold text-orange-500">
                     {plan.limits.teamMembers === Infinity ? '∞' : plan.limits.teamMembers}
                   </p>
                   <p className="text-sm text-gray-400">Team Size</p>
@@ -132,17 +129,16 @@ const UserDashboard = () => {
             </motion.div>
           )}
 
-          {/* Recent Activity */}
           <div>
             <h2 className="text-xl font-bold text-white mb-4">Recent Activity</h2>
-            <div className="bg-omega-dark rounded-xl border border-omega-copper/30 divide-y divide-omega-copper/30">
+            <div className="bg-zinc-900 rounded-xl border border-zinc-800 divide-y divide-zinc-800">
               {[
                 { action: 'Started chat session', time: '2 minutes ago', icon: MessageSquare },
                 { action: 'Generated React component', time: '15 minutes ago', icon: Code },
                 { action: 'Searched for "AI trends 2024"', time: '1 hour ago', icon: Search },
               ].map((activity, index) => (
-                <div key={index} className="p-4 flex items-center gap-4 hover:bg-omega-darker/50 transition-colors">
-                  <activity.icon className="w-5 h-5 text-omega-orange" />
+                <div key={index} className="p-4 flex items-center gap-4 hover:bg-zinc-800 transition-colors">
+                  <activity.icon className="w-5 h-5 text-orange-500" />
                   <div className="flex-1">
                     <p className="text-white">{activity.action}</p>
                     <p className="text-sm text-gray-400 flex items-center gap-1">

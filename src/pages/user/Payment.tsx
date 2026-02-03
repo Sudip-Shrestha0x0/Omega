@@ -92,13 +92,16 @@ const Payment = () => {
 
   if (paymentSuccess) {
     return (
-      <div className="flex flex-col h-full w-full">
-        <header className="flex items-center sticky top-0 z-10 gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6 py-4">
+      <div className="flex flex-col h-full w-full bg-black">
+        {/* Sticky header  */}
+        <header className="sticky top-0 flex-shrink-0 flex items-center z-20 gap-2 sm:gap-4 border-b border-zinc-800 bg-black px-3 sm:px-6 py-4">
           <SidebarTrigger />
-          <h1 className="text-2xl font-bold">Payment Successful</h1>
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold text-white">Payment Successful</h1>
+          </div>
         </header>
 
-        <main className="flex-1 flex items-center justify-center p-6">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide flex items-center justify-center p-3 sm:p-6 bg-black">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -107,24 +110,24 @@ const Payment = () => {
             <div className="w-24 h-24 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
               <CheckCircle2 className="w-12 h-12 text-green-500" />
             </div>
-            <h2 className="text-3xl font-bold mb-4">Payment Successful!</h2>
-            <p className="text-muted-foreground mb-2">
+            <h2 className="text-3xl font-bold mb-4 text-white">Payment Successful!</h2>
+            <p className="text-gray-400 mb-2">
               You've been upgraded to the <strong>{plan.name}</strong> plan.
             </p>
-            <p className="text-sm text-muted-foreground mb-8">
+            <p className="text-sm text-gray-400 mb-8">
               Redirecting you to your dashboard...
             </p>
-            <div className="bg-card border p-6 rounded-lg">
+            <div className="bg-zinc-900 border border-zinc-800 p-6 rounded-lg">
               <div className="flex justify-between mb-2">
-                <span className="text-muted-foreground">Plan</span>
-                <span className="font-semibold">{plan.name}</span>
+                <span className="text-gray-400">Plan</span>
+                <span className="font-semibold text-white">{plan.name}</span>
               </div>
               <div className="flex justify-between mb-2">
-                <span className="text-muted-foreground">Amount</span>
-                <span className="font-semibold">${plan.price}/month</span>
+                <span className="text-gray-400">Amount</span>
+                <span className="font-semibold text-white">${plan.price}/month</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Status</span>
+                <span className="text-gray-400">Status</span>
                 <span className="text-green-500 font-semibold">Completed</span>
               </div>
             </div>
@@ -135,89 +138,90 @@ const Payment = () => {
   }
 
   return (
-    <div className="flex flex-col h-full w-full">
-      <header className="flex items-center sticky top-0 z-10 gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6 py-4">
+    <div className="flex flex-col h-full w-full bg-black">
+      {/* Sticky header - stays visible while scrolling */}
+      <header className="sticky top-0 flex-shrink-0 flex items-center z-20 gap-2 sm:gap-4 border-b border-zinc-800 bg-black px-3 sm:px-6 py-4">
         <SidebarTrigger />
         <button
           onClick={() => navigate('/dashboard/plans')}
-          className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+          className="flex items-center gap-2 text-gray-400 hover:text-white"
         >
           <ArrowLeft className="w-4 h-4" />
           Back
         </button>
-        <h1 className="text-2xl font-bold">Complete Payment</h1>
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold text-white">Complete Payment</h1>
+        </div>
       </header>
 
-      <main className="flex-1 overflow-auto p-6">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide p-3 sm:p-6 bg-black">
         <div className="max-w-4xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-8">
-            {/* Order Summary */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               className="space-y-6"
             >
-              <div className="bg-card border p-6 rounded-lg">
-                <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+              <div className="bg-zinc-900 border border-zinc-800 p-6 rounded-lg">
+                <h2 className="text-xl font-bold mb-4 text-white">Order Summary</h2>
                 <div className="space-y-4">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Plan</span>
-                    <span className="font-semibold">{plan.name}</span>
+                    <span className="text-gray-400">Plan</span>
+                    <span className="font-semibold text-white">{plan.name}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Billing Cycle</span>
-                    <span className="font-semibold">Monthly</span>
+                    <span className="text-gray-400">Billing Cycle</span>
+                    <span className="font-semibold text-white">Monthly</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Subtotal</span>
-                    <span className="font-semibold">${plan.price}</span>
+                    <span className="text-gray-400">Subtotal</span>
+                    <span className="font-semibold text-white">${plan.price}</span>
                   </div>
-                  <div className="border-t pt-4 flex justify-between text-lg">
-                    <span className="font-bold">Total Due Today</span>
-                    <span className="font-bold text-primary">${plan.price}</span>
+                  <div className="border-t border-zinc-800 pt-4 flex justify-between text-lg">
+                    <span className="font-bold text-white">Total Due Today</span>
+                    <span className="font-bold text-orange-500">${plan.price}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-primary/10 border border-primary/20 p-6 rounded-lg">
+              <div className="bg-orange-500/10 border border-orange-500/20 p-6 rounded-lg">
                 <div className="flex items-start gap-3">
-                  <Lock className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <Lock className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h3 className="font-semibold mb-1">Secure Payment</h3>
-                    <p className="text-sm text-muted-foreground">
+                    <h3 className="font-semibold mb-1 text-white">Secure Payment</h3>
+                    <p className="text-sm text-gray-400">
                       Your payment information is encrypted and secure. We use industry-standard SSL encryption.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-card border p-6 rounded-lg">
-                <h3 className="font-semibold mb-3">What's Included</h3>
+              <div className="bg-zinc-900 border border-zinc-800 p-6 rounded-lg">
+                <h3 className="font-semibold mb-3 text-white">What's Included</h3>
                 <ul className="space-y-2">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-center gap-2 text-sm">
-                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                      <span>{feature}</span>
+                      <CheckCircle2 className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                      <span className="text-gray-300">{feature}</span>
                     </li>
                   ))}
                 </ul>
               </div>
             </motion.div>
 
-            {/* Payment Form */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-card border p-8 rounded-lg"
+              className="bg-zinc-900 border border-zinc-800 p-8 rounded-lg"
             >
-              <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-                <CreditCard className="w-6 h-6 text-primary" />
+              <h2 className="text-xl font-bold mb-6 flex items-center gap-2 text-white">
+                <CreditCard className="w-6 h-6 text-orange-500" />
                 Payment Details
               </h2>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Card Number</label>
+                  <label className="block text-sm font-medium mb-2 text-white">Card Number</label>
                   <input
                     type="text"
                     value={cardDetails.number}
@@ -225,19 +229,19 @@ const Payment = () => {
                       setCardDetails({ ...cardDetails, number: formatCardNumber(e.target.value) })
                     }
                     maxLength={19}
-                    className="w-full bg-secondary border-0 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full bg-zinc-800 border-0 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
                     placeholder="1234 5678 9012 3456"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Cardholder Name</label>
+                  <label className="block text-sm font-medium mb-2 text-white">Cardholder Name</label>
                   <input
                     type="text"
                     value={cardDetails.name}
                     onChange={(e) => setCardDetails({ ...cardDetails, name: e.target.value })}
-                    className="w-full bg-secondary border-0 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full bg-zinc-800 border-0 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
                     placeholder="John Doe"
                     required
                   />
@@ -245,7 +249,7 @@ const Payment = () => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Expiry Date</label>
+                    <label className="block text-sm font-medium mb-2 text-white">Expiry Date</label>
                     <input
                       type="text"
                       value={cardDetails.expiry}
@@ -253,13 +257,13 @@ const Payment = () => {
                         setCardDetails({ ...cardDetails, expiry: formatExpiry(e.target.value) })
                       }
                       maxLength={5}
-                      className="w-full bg-secondary border-0 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full bg-zinc-800 border-0 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
                       placeholder="MM/YY"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">CVV</label>
+                    <label className="block text-sm font-medium mb-2 text-white">CVV</label>
                     <input
                       type="text"
                       value={cardDetails.cvv}
@@ -267,7 +271,7 @@ const Payment = () => {
                         setCardDetails({ ...cardDetails, cvv: e.target.value.replace(/\D/g, '') })
                       }
                       maxLength={4}
-                      className="w-full bg-secondary border-0 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full bg-zinc-800 border-0 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
                       placeholder="123"
                       required
                     />
@@ -277,11 +281,11 @@ const Payment = () => {
                 <button
                   type="submit"
                   disabled={isProcessing}
-                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-4 rounded-lg font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-lg font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {isProcessing ? (
                     <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-primary-foreground border-t-transparent" />
+                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
                       Processing...
                     </>
                   ) : (
@@ -292,7 +296,7 @@ const Payment = () => {
                   )}
                 </button>
 
-                <p className="text-xs text-center text-muted-foreground">
+                <p className="text-xs text-center text-gray-400">
                   By completing this purchase, you agree to our Terms of Service and Privacy Policy.
                   Your subscription will renew automatically each month.
                 </p>
