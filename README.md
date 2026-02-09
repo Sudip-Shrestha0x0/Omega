@@ -1,7 +1,7 @@
 <div align="center">
   <img src="./public/omega-icon.svg" alt="Omega Logo" height="100" width="100" />
   <h1>Omega AI Platform</h1>
-  <p>A production-grade, feature-rich, unbiased and unfiltered AI assistant platform built with modern frontend technologies.</p>
+  <p>A production-grade, unbiased and unfiltered AI assistant platform built with modern frontend technologies.</p>
 
   ![React](https://img.shields.io/badge/React-18.3-61DAFB?style=flat&logo=react)
   ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat&logo=typescript)
