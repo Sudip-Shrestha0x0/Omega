@@ -7,6 +7,8 @@
   ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat&logo=typescript)
   ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=flat&logo=tailwindcss)
   ![Vite](https://img.shields.io/badge/Vite-6.3-646CFF?style=flat&logo=vite)
+
+  <p><a href="https://theomega.netlify.app/">Live Demo</a></p>  
 </div>
 
 ---
@@ -21,8 +23,6 @@ To facilitate testing and explore the full functionality of the platform, please
 
 - **Email:** `light0x01@gmail.com`
 - **Password:** `developer123`
-
-[View Live Demo](https://theomega.netlify.app/)
 
 ## Key Features
 
