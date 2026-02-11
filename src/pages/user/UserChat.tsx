@@ -678,8 +678,8 @@ const UserChat = () => {
                           </button>
                         </div>
                       </div>
-                    ) : (
-                      <div className={`inline-block max-w-[85%] sm:max-w-[75%] p-4 rounded-2xl relative group overflow-hidden ${
+                    ) : (<>
+                      <div className={`inline-block max-w-[85%] sm:max-w-[75%] p-4 rounded-2xl relative ${
                         message.role === 'user'
                           ? 'bg-orange-500 text-white'
                           : 'bg-zinc-900 border border-zinc-800 text-white'
@@ -714,22 +714,6 @@ const UserChat = () => {
                             ))}
                           </div>
                         )}
-                        {message.role === 'user' && (
-                          <div className="absolute -bottom-8 right-0 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2 z-10">
-                            <button
-                              onClick={() => handleEditMessage(message.id, message.content)}
-                              className="bg-zinc-800 hover:bg-zinc-700 text-white rounded-full p-2 border border-zinc-700"
-                            >
-                              <Edit2 className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={() => handleDeleteMessage(message.id)}
-                              className="bg-zinc-800 hover:bg-red-900/50 text-red-500 rounded-full p-2 border border-zinc-700"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </div>
-                        )}
                         {message.role === 'assistant' && (
                           <button
                             onClick={() => handleDeleteMessage(message.id)}
@@ -739,7 +723,23 @@ const UserChat = () => {
                           </button>
                         )}
                       </div>
-                    )}
+                      {message.role === 'user' && (
+                        <div className={`flex gap-2 mt-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity justify-end`}>
+                          <button
+                            onClick={() => handleEditMessage(message.id, message.content)}
+                            className="bg-zinc-800 hover:bg-zinc-700 text-white rounded-full p-2 border border-zinc-700"
+                          >
+                            <Edit2 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteMessage(message.id)}
+                            className="bg-zinc-800 hover:bg-red-900/50 text-red-500 rounded-full p-2 border border-zinc-700"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
+                    </> )}
                     
                     {message.role === 'assistant' && index === messages.length - 1 && !isLoading && (
                       <div className="mt-2 flex flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-2 px-1">
